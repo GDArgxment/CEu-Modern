@@ -618,7 +618,7 @@ public class FirstDegreeMaterials {
                         .enchantability(14).build())
                 .rotorStats(160, 115, 4.0f, 480)
                 .fluidPipeProperties(2428, 75, true, true, true, false)
-                .blast(b -> b.temp(1700, GasTier.LOW)
+                .blast(b -> b.temp(1800, GasTier.LOW)
                         .blastStats(VA[HV], 1100))
                 .buildAndRegister();
 
