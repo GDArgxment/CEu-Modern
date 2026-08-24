@@ -6,7 +6,6 @@ import com.gregtechceu.gtceu.api.capability.recipe.RecipeCapability;
 import com.gregtechceu.gtceu.api.machine.multiblock.MultiblockControllerMachine;
 import com.gregtechceu.gtceu.api.machine.multiblock.part.MultiblockPartMachine;
 import com.gregtechceu.gtceu.api.machine.trait.ICapabilityTrait;
-import com.gregtechceu.gtceu.api.machine.trait.MachineTraitType;
 import com.gregtechceu.gtceu.api.machine.trait.feature.IAttachConfiguratorsTrait;
 import com.gregtechceu.gtceu.api.machine.trait.notifiable.NotifiableItemStackHandler;
 import com.gregtechceu.gtceu.api.machine.trait.notifiable.NotifiableRecipeHandlerTrait;
@@ -33,9 +32,6 @@ import java.util.List;
 public class ProgrammableCircuitSlotTrait extends NotifiableRecipeHandlerTrait<Ingredient>
                                           implements IAttachConfiguratorsTrait, ICapabilityTrait {
 
-    public static final MachineTraitType<ProgrammableCircuitSlotTrait> TYPE = new MachineTraitType<>(
-            ProgrammableCircuitSlotTrait.class);
-
     @SaveField
     public final CustomItemStackHandler storage;
 
@@ -50,11 +46,6 @@ public class ProgrammableCircuitSlotTrait extends NotifiableRecipeHandlerTrait<I
         storage = new CustomItemStackHandler(1);
         storage.setFilter(IntCircuitBehaviour::isIntegratedCircuit);
         storage.setOnContentsChanged(this::notifyListeners);
-    }
-
-    @Override
-    public MachineTraitType<ProgrammableCircuitSlotTrait> getTraitType() {
-        return TYPE;
     }
 
     // Returns the current circuit value
@@ -105,7 +96,8 @@ public class ProgrammableCircuitSlotTrait extends NotifiableRecipeHandlerTrait<I
     public List<Ingredient> handleRecipeInner(IO io, GTRecipe recipe, List<Ingredient> left,
                                               boolean simulate) {
         if (!controllerAllowsCircuits || !enabled || !ConfigHolder.INSTANCE.machines.ghostCircuit) return left;
-        return NotifiableItemStackHandler.handleRecipe(io, recipe, left, simulate, getHandlerIO(), storage);
+        return NotifiableItemStackHandler.handleRecipe(io, recipe, left, simulate, getHandlerIO(), storage,
+                getMachine());
     }
 
     @Override
